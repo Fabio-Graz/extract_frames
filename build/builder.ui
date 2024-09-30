@@ -191,33 +191,11 @@ will be created with a standard name.</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkEntry" id="entry_fps_2">
-                    <property name="editable">False</property>
-                    <property name="halign">start</property>
-                    <property name="visible">True</property>
-                    <property name="width-chars">4</property>
-                  </object>
-                  <packing>
-                    <property name="left-attach">0</property>
-                    <property name="top-attach">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkEntry" id="entry_fps_3">
-                    <property name="editable">False</property>
-                    <property name="halign">start</property>
-                    <property name="visible">True</property>
-                    <property name="width-chars">4</property>
-                  </object>
-                  <packing>
-                    <property name="left-attach">0</property>
-                    <property name="top-attach">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkEntry" id="entry_start">
+                  <object class="GtkSpinButton" id="spin_start">
+                    <property name="adjustment">adj_strt</property>
                     <property name="halign">start</property>
                     <property name="has-tooltip">True</property>
+                    <property name="numeric">True</property>
                     <property name="text">0</property>
                     <property name="tooltip-text">Enter here the start in seconds. 
 When "read parameters" is pressed this field 
@@ -242,8 +220,13 @@ is reset to the default, which is '0'.</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkEntry" id="entry_end">
+                  <object class="GtkSpinButton" id="spin_end">
+                    <property name="adjustment">adj_end</property>
                     <property name="halign">start</property>
+                    <property name="input-purpose">digits</property>
+                    <property name="numeric">True</property>
+                    <property name="progress-pulse-step">1.0</property>
+                    <property name="snap-to-ticks">True</property>
                     <property name="visible">True</property>
                     <property name="width-chars">6</property>
                   </object>
@@ -265,13 +248,6 @@ in seconds.</property>
                   </object>
                   <packing>
                     <property name="left-attach">6</property>
-                    <property name="top-attach">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkSpinButton"/>
-                  <packing>
-                    <property name="left-attach">0</property>
                     <property name="top-attach">0</property>
                   </packing>
                 </child>
@@ -303,5 +279,15 @@ in seconds.</property>
         </child>
       </object>
     </child>
+  </object>
+  <object class="GtkAdjustment" id="adj_strt">
+    <property name="page-increment">5.0</property>
+    <property name="step-increment">1.0</property>
+    <property name="upper">99999.0</property>
+  </object>
+  <object class="GtkAdjustment" id="adj_end">
+    <property name="page-increment">5.0</property>
+    <property name="step-increment">1.0</property>
+    <property name="upper">99999.0</property>
   </object>
 </interface>

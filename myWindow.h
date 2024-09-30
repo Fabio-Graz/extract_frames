@@ -38,8 +38,8 @@ protected:
 
 
     Glib::RefPtr<Gtk::Entry> m_entry_fps;
-    Glib::RefPtr<Gtk::Entry> m_entry_start;
-    Glib::RefPtr<Gtk::Entry> m_entry_end;
+    Glib::RefPtr<Gtk::SpinButton> m_spin_start;
+    Glib::RefPtr<Gtk::SpinButton> m_spin_end;
 
 
     Glib::RefPtr<Gtk::Button> m_button_quit;

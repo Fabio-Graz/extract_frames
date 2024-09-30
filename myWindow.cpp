@@ -5,6 +5,7 @@
 //#include <gtkmm/entry.h>
 #include <iostream>
 #include <filesystem>
+#include <cmath>
 
 MainWindow::MainWindow(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& p_builder)
 : Gtk::Window(cobject), m_builder{p_builder}
@@ -43,13 +44,13 @@ MainWindow::MainWindow(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
     m_builder->get_widget("entry_fps", p_entry_fps); // Retrieve the entry for fps value
     m_entry_fps = Glib::RefPtr<Gtk::Entry>(p_entry_fps); // Assign to m_entry
 
-    Gtk::Entry* p_entry_start = nullptr; // Create a raw pointer to an entry field for start value
-    m_builder->get_widget("entry_start", p_entry_start); // Retrieve the entry for start value
-    m_entry_start = Glib::RefPtr<Gtk::Entry>(p_entry_start); // Assign to m_entry
+    Gtk::SpinButton* p_spin_start = nullptr; // Create a raw pointer to an entry field for start value
+    m_builder->get_widget("spin_start", p_spin_start); // Retrieve the entry for start value
+    m_spin_start = Glib::RefPtr<Gtk::SpinButton>(p_spin_start); // Assign to m_entry
 
-    Gtk::Entry* p_entry_end = nullptr; // Create a raw pointer to an entry field for stop value
-    m_builder->get_widget("entry_end", p_entry_end); // Retrieve the entry for end value
-    m_entry_end = Glib::RefPtr<Gtk::Entry>(p_entry_end); // Assign to m_entry
+    Gtk::SpinButton* p_spin_end = nullptr; // Create a raw pointer to an entry field for stop value
+    m_builder->get_widget("spin_end", p_spin_end); // Retrieve the entry for end value
+    m_spin_end = Glib::RefPtr<Gtk::SpinButton>(p_spin_end); // Assign to m_entry
 
 
 
@@ -126,7 +127,7 @@ void MainWindow::on_read_button_clicked()
 
     int frameNumbers =  vidcap.get(cv::CAP_PROP_FRAME_COUNT);
 
-    float durationSec =  (frameNumbers/fps) ;
+    int durationSec =  (int)std::floor(frameNumbers/fps) ;
 
     std::cout << "ftp = " << fps << std::endl;
     std::cout << "total frames = " << frameNumbers << std::endl;
@@ -134,9 +135,10 @@ void MainWindow::on_read_button_clicked()
 
     m_entry_fps->set_text(std::to_string(fps));
 
-    m_entry_start->set_text(std::to_string(0));
+    m_spin_start->set_value(0);
 
-    m_entry_end->set_text(std::to_string(durationSec));
+    m_spin_end->set_value(durationSec);
+
 }
 
 
@@ -193,9 +195,9 @@ void MainWindow::on_proc_button_clicked()
     int videoLengthMs = (framesNumber / fps) * 1000;
 
 
-    float startMs = strtSec->value() * 1000 ;
+    float startMs = m_spin_start->get_value() * 1000 ;
 
-    float endMs = endSec->value() * 1000;
+    float endMs = m_spin_end->get_value() * 1000;
 
 
 
@@ -226,7 +228,18 @@ void MainWindow::on_proc_button_clicked()
 
       std::cout <<"read frame at timestamp  " + timestamp << std::endl;
 
+    if (timestamp > endMs)
+    {
+        return;
 
+    }
+
+    if (timestamp < startMs)
+    {
+
+        bSuccess = vidcap.read(frame);
+        continue ;
+    }
 
     if (frame.empty())
         {

@@ -1,0 +1,307 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Created with Cambalache 0.92.0 -->
+<interface>
+  <!-- interface-name builder.ui -->
+  <!-- interface-authors Fabio Grazioso -->
+  <requires lib="gtk+" version="3.20"/>
+  <object class="GtkWindow" id="mainWindow">
+    <property name="default-height">400</property>
+    <property name="default-width">1000</property>
+    <property name="has-resize-grip">True</property>
+    <property name="title">Video process App (prototype)</property>
+    <child>
+      <object class="GtkGrid" id="grid_general">
+        <property name="orientation">vertical</property>
+        <property name="visible">True</property>
+        <child>
+          <object class="GtkFrame" id="frame_top">
+            <property name="border-width">2</property>
+            <property name="margin">2</property>
+            <property name="visible">True</property>
+            <child>
+              <object class="GtkGrid" id="grid1">
+                <property name="orientation">vertical</property>
+                <property name="visible">True</property>
+                <child>
+                  <object class="GtkLabel" id="label_inputfile">
+                    <property name="halign">start</property>
+                    <property name="label">input path:</property>
+                    <property name="visible">True</property>
+                  </object>
+                  <packing>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="label_instructions">
+                    <property name="halign">start</property>
+                    <property name="label">This application can extract frames from a video file.
+Insert the input path in the first field, or use the button to select.\n"
+If you want to batch process all files in a folder, check the checkbox and add the extension of the files (without the dot).
+When ready, press the 'Extract' button. Folders will be created, with the same name of the file. It is possible to write a watermark with the name on the corner of each file. It is possible to skip every 'n' frames.</property>
+                    <property name="margin">6</property>
+                    <property name="visible">True</property>
+                    <property name="wrap">True</property>
+                  </object>
+                  <packing>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkEntry" id="entry_file">
+                    <property name="has-tooltip">True</property>
+                    <property name="height-request">1</property>
+                    <property name="hexpand">True</property>
+                    <property name="margin">1</property>
+                    <property name="tooltip-text">this is an entry field</property>
+                    <property name="visible">True</property>
+                    <property name="width-request">4</property>
+                  </object>
+                  <packing>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="button_open">
+                    <property name="halign">start</property>
+                    <property name="label">sel. input</property>
+                    <property name="visible">True</property>
+                  </object>
+                  <packing>
+                    <property name="left-attach">1</property>
+                    <property name="top-attach">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="button_open_2">
+                    <property name="halign">start</property>
+                    <property name="label">choose out folder</property>
+                    <property name="visible">True</property>
+                  </object>
+                  <packing>
+                    <property name="left-attach">1</property>
+                    <property name="top-attach">4</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkEntry" id="entry_out_folder">
+                    <property name="has-tooltip">True</property>
+                    <property name="height-request">1</property>
+                    <property name="hexpand">True</property>
+                    <property name="margin">1</property>
+                    <property name="tooltip-text">In this field can be pasted the full path to the output folder.\n"
+The path can be edited manually before the start of the processing.\n"
+NB this field will be used ONLY FOR THE SINGLE FILE PROCESSING.\n"
+If multiple files are processed (see checkbox)
+this field will be ignored, and output folders
+will be created with a standard name.</property>
+                    <property name="visible">True</property>
+                    <property name="width-request">4</property>
+                  </object>
+                  <packing>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">4</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="label_output">
+                    <property name="halign">start</property>
+                    <property name="label">output folder path:</property>
+                    <property name="visible">True</property>
+                  </object>
+                  <packing>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">3</property>
+                  </packing>
+                </child>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="left-attach">0</property>
+            <property name="top-attach">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkFrame" id="frame_operations">
+            <property name="border-width">2</property>
+            <property name="margin">2</property>
+            <property name="visible">True</property>
+            <child>
+              <object class="GtkGrid" id="grid2">
+                <property name="orientation">vertical</property>
+                <property name="visible">True</property>
+                <child>
+                  <object class="GtkButton" id="button_read">
+                    <property name="halign">start</property>
+                    <property name="label">read par</property>
+                    <property name="visible">True</property>
+                  </object>
+                  <packing>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkEntry" id="entry_fps">
+                    <property name="editable">False</property>
+                    <property name="halign">start</property>
+                    <property name="visible">True</property>
+                    <property name="width-chars">4</property>
+                  </object>
+                  <packing>
+                    <property name="left-attach">1</property>
+                    <property name="top-attach">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="label_fps">
+                    <property name="halign">start</property>
+                    <property name="label">fps</property>
+                    <property name="visible">True</property>
+                  </object>
+                  <packing>
+                    <property name="left-attach">2</property>
+                    <property name="top-attach">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="button_proc">
+                    <property name="halign">start</property>
+                    <property name="label">Process</property>
+                    <property name="visible">True</property>
+                  </object>
+                  <packing>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="button_quit">
+                    <property name="halign">start</property>
+                    <property name="label">Quit</property>
+                    <property name="visible">True</property>
+                  </object>
+                  <packing>
+                    <property name="left-attach">3</property>
+                    <property name="top-attach">3</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkEntry" id="entry_fps_2">
+                    <property name="editable">False</property>
+                    <property name="halign">start</property>
+                    <property name="visible">True</property>
+                    <property name="width-chars">4</property>
+                  </object>
+                  <packing>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkEntry" id="entry_fps_3">
+                    <property name="editable">False</property>
+                    <property name="halign">start</property>
+                    <property name="visible">True</property>
+                    <property name="width-chars">4</property>
+                  </object>
+                  <packing>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkEntry" id="entry_start">
+                    <property name="halign">start</property>
+                    <property name="has-tooltip">True</property>
+                    <property name="text">0</property>
+                    <property name="tooltip-text">Enter here the start in seconds. 
+When "read parameters" is pressed this field 
+is reset to the default, which is '0'.</property>
+                    <property name="visible">True</property>
+                    <property name="width-chars">6</property>
+                  </object>
+                  <packing>
+                    <property name="left-attach">3</property>
+                    <property name="top-attach">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="label_start">
+                    <property name="halign">start</property>
+                    <property name="label">start</property>
+                    <property name="visible">True</property>
+                  </object>
+                  <packing>
+                    <property name="left-attach">4</property>
+                    <property name="top-attach">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkEntry" id="entry_end">
+                    <property name="halign">start</property>
+                    <property name="visible">True</property>
+                    <property name="width-chars">6</property>
+                  </object>
+                  <packing>
+                    <property name="left-attach">5</property>
+                    <property name="top-attach">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="label_end">
+                    <property name="halign">start</property>
+                    <property name="label">end</property>
+                    <property name="tooltip-text">Enter here the end in seconds. 
+When 'read parameters' is pressed, 
+in this field will be written the total length 
+in seconds.</property>
+                    <property name="visible">True</property>
+                    <property name="width-chars">3</property>
+                  </object>
+                  <packing>
+                    <property name="left-attach">6</property>
+                    <property name="top-attach">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkSpinButton"/>
+                  <packing>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">0</property>
+                  </packing>
+                </child>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="left-attach">0</property>
+            <property name="top-attach">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkFrame" id="frame_bottom">
+            <property name="border-width">2</property>
+            <property name="visible">True</property>
+            <child>
+              <object class="GtkTextView" id="text_test">
+                <property name="border-width">1</property>
+                <property name="editable">False</property>
+                <property name="expand">True</property>
+                <property name="visible">True</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="left-attach">0</property>
+            <property name="top-attach">2</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>

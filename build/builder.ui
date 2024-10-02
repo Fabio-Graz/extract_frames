@@ -264,7 +264,7 @@ in seconds.</property>
             <property name="border-width">2</property>
             <property name="visible">True</property>
             <child>
-              <object class="GtkTextView" id="text_test">
+              <object class="GtkTextView" id="textview_log">
                 <property name="border-width">1</property>
                 <property name="editable">False</property>
                 <property name="expand">True</property>

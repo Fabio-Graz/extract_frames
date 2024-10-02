@@ -1,11 +1,11 @@
 #include "myWindow.h"
 #include <gtkmm.h>
-//#include <gtkmm/button.h>
-//#include <gtkmm/filechoosernative.h>
-//#include <gtkmm/entry.h>
+
 #include <iostream>
 #include <filesystem>
 #include <cmath>
+//#include <cstring>
+#include <sstream>
 
 MainWindow::MainWindow(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& p_builder)
 : Gtk::Window(cobject), m_builder{p_builder}
@@ -52,6 +52,10 @@ MainWindow::MainWindow(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
     m_builder->get_widget("spin_end", p_spin_end); // Retrieve the entry for end value
     m_spin_end = Glib::RefPtr<Gtk::SpinButton>(p_spin_end); // Assign to m_entry
 
+
+    Gtk::TextView* p_text_log= nullptr; // Create a raw pointer to a TextView
+    m_builder->get_widget("textview_log", p_text_log); // Retrieve the entry for textview_log
+    m_text_log = Glib::RefPtr<Gtk::TextView>(p_text_log); // Assign to m_entry
 
 
     // Connect the open button click event to the relative function
@@ -132,6 +136,21 @@ void MainWindow::on_read_button_clicked()
     std::cout << "ftp = " << fps << std::endl;
     std::cout << "total frames = " << frameNumbers << std::endl;
     std::cout << "total duration (sec) = " << durationSec << std::endl;
+
+
+    std::ostringstream osstream;
+
+    osstream <<  "File parameters successfully read!\n ftp = " << fps << "\ntotal frames = " << frameNumbers << "\ntotal duration (sec) = " << durationSec << "\n";
+
+    Glib::ustring ready_ustrm = osstream.str();
+
+
+    Glib::RefPtr<Gtk::TextBuffer> buffer = m_text_log->get_buffer();
+
+
+    buffer->insert(buffer->end(), ready_ustrm);
+
+
 
     m_entry_fps->set_text(std::to_string(fps));
 
@@ -276,7 +295,20 @@ void MainWindow::on_proc_button_clicked()
 
 
 
+void MainWindow::append_log(std::ostringstream osstream)
+{
 
+
+
+    Glib::ustring ready_ustrm = osstream.str();
+
+
+
+    Glib::RefPtr<Gtk::TextBuffer> buff = m_text_log->get_buffer();
+
+
+    buff->insert(buff->end(),  ready_ustrm);
+}
 
 
 

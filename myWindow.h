@@ -15,6 +15,10 @@
 
 #include <string>
 
+#include <iostream>
+
+#include <sstream>
+
 #include <filesystem>
 
 
@@ -41,10 +45,14 @@ protected:
     Glib::RefPtr<Gtk::SpinButton> m_spin_start;
     Glib::RefPtr<Gtk::SpinButton> m_spin_end;
 
+    Glib::RefPtr<Gtk::TextView> m_text_log;
+
 
     Glib::RefPtr<Gtk::Button> m_button_quit;
 
+    // private methods
 
+    void append_log(std::ostringstream);
 
 
 

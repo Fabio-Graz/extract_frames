@@ -10,16 +10,26 @@ int main(int argc, char** argv)
 
     auto builder = Gtk::Builder::create_from_file("builder.ui");
 
+    if (!builder) {
+        std::cerr << "Failed to load builder.ui\n";
+        return 1;
+    }
+
+
     MainWindow* window = nullptr;
 
     builder->get_widget_derived("mainWindow", window);
 
-    app->run(*window);
+    if (!window) {
+        std::cerr << "Failed to load mainWindow from builder.ui\n";
+        return 1;
+    }
+
 
         try
         {
             // You then show the window by using you handle (i.e window).
-            app->run(*window);
+            return app->run(*window);
         }
 
         catch(const std::runtime_error& re)

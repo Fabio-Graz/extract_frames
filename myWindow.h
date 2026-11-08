@@ -47,6 +47,7 @@ protected:
 
     Glib::RefPtr<Gtk::TextView> m_text_log;
 
+    Glib::RefPtr<Gtk::ProgressBar> m_progress;
 
     Glib::RefPtr<Gtk::Button> m_button_quit;
 

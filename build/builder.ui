@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<!-- Created with Cambalache 0.92.0 -->
+<!-- Created with Cambalache 1.2.0 -->
 <interface>
   <!-- interface-name builder.ui -->
   <!-- interface-authors Fabio Grazioso -->
@@ -197,8 +197,8 @@ will be created with a standard name.</property>
                     <property name="has-tooltip">True</property>
                     <property name="numeric">True</property>
                     <property name="text">0</property>
-                    <property name="tooltip-text">Enter here the start in seconds. 
-When "read parameters" is pressed this field 
+                    <property name="tooltip-text">Enter here the start in seconds.
+When "read parameters" is pressed this field
 is reset to the default, which is '0'.</property>
                     <property name="visible">True</property>
                     <property name="width-chars">6</property>
@@ -239,9 +239,9 @@ is reset to the default, which is '0'.</property>
                   <object class="GtkLabel" id="label_end">
                     <property name="halign">start</property>
                     <property name="label">end</property>
-                    <property name="tooltip-text">Enter here the end in seconds. 
-When 'read parameters' is pressed, 
-in this field will be written the total length 
+                    <property name="tooltip-text">Enter here the end in seconds.
+When 'read parameters' is pressed,
+in this field will be written the total length
 in seconds.</property>
                     <property name="visible">True</property>
                     <property name="width-chars">3</property>
@@ -275,6 +275,16 @@ in seconds.</property>
           <packing>
             <property name="left-attach">0</property>
             <property name="top-attach">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkProgressBar" id="progress">
+            <property name="visible">True</property>
+          </object>
+          <packing>
+            <property name="left-attach">0</property>
+            <property name="top-attach">3</property>
+            <property name="width">4</property>
           </packing>
         </child>
       </object>

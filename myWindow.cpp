@@ -58,6 +58,17 @@ MainWindow::MainWindow(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
     m_text_log = Glib::RefPtr<Gtk::TextView>(p_text_log); // Assign to m_entry
 
 
+
+    Gtk::ProgressBar* p_progress = nullptr;
+    m_builder->get_widget("progress", p_progress);
+    m_progress = Glib::RefPtr<Gtk::ProgressBar>(p_progress);
+    if (!m_progress) {
+        std::cerr << "Warning: progress bar 'progress' not found in builder.ui\n";
+    }
+
+
+
+
     // Connect the open button click event to the relative function
     m_button_open->signal_clicked().connect(sigc::mem_fun(*this, &MainWindow::on_select_input_clicked));
 
@@ -209,9 +220,14 @@ void MainWindow::on_proc_button_clicked()
 
     double fps = vidcap.get(cv::CAP_PROP_FPS); //get the frames per seconds of the video
 
-    int framesNumber =  vidcap.get(cv::CAP_PROP_FRAME_COUNT);
+    if (fps <= 0.0) {
+        std::cerr << "Invalid FPS from video, aborting\n";
+        return;
+    }
 
-    int videoLengthMs = (framesNumber / fps) * 1000;
+    int framesNumber =  static_cast<int>(vidcap.get(cv::CAP_PROP_FRAME_COUNT));
+
+    int videoLengthMs = static_cast<int>((framesNumber / fps) * 1000);
 
 
     float startMs = m_spin_start->get_value() * 1000 ;
@@ -231,64 +247,71 @@ void MainWindow::on_proc_button_clicked()
 
 
     cv::Mat frame;
-
-    bool bSuccess = vidcap.read(frame); // read a new frame from video
-
-    int timestamp;
     std::stringstream ss;
-
     std::string outFilename;
 
+    int timestamp;
 
-    while(bSuccess)
-    {
-
-      timestamp = vidcap.get(cv::CAP_PROP_POS_MSEC);
-
-      std::cout <<"read frame at timestamp  " + timestamp << std::endl;
-
-    if (timestamp > endMs)
-    {
-        return;
-
+    if (m_progress) {
+        m_progress->set_fraction(0.0);
     }
 
-    if (timestamp < startMs)
+
+    while(vidcap.read(frame))
     {
 
-        bSuccess = vidcap.read(frame);
-        continue ;
-    }
+      if (frame.empty()) break;  // defensive: some codecs return empty on success
 
-    if (frame.empty())
-        {
-           std::cout <<"Reached last frame! " << std::endl;
-           break;
-        }
+      timestamp = static_cast<int>(vidcap.get(cv::CAP_PROP_POS_MSEC));
 
+      std::cout <<"read frame at timestamp  " << timestamp << std::endl;
 
-      outFilename = "";
+      if (timestamp > endMs)    break;
+
+      if (timestamp < startMs) continue ;// ← skip, next iteration reads the next frame
+
       ss.str(std::string());
-
-
       ss << std::setfill('0') << std::setw(charnm) << timestamp;
+      outFilename = ss.str() + ".png";
 
-      //ss << timestamp;
-
-      outFilename = ss.str();
-
-      outFilename.append(".png");
-
-      bSuccess = vidcap.read(frame);
 
       std::filesystem::path outputFile_fs = outputFolder_fs / outFilename;
 
-      cv::imwrite(outputFile_fs, frame);
+      if (!cv::imwrite(outputFile_fs, frame)) {    // check return: false means write failed
+          std::cerr << "imwrite failed for " << outputFile_fs << "\n";
+      } else {
+          std::cout << "Saved frame " << timestamp << "\n";
+      }
 
 
-      std::cout << "Saved frame  " <<  timestamp << std::endl;
+      // --- progress bar + GTK event pump -------------------------------
+      if (m_progress) {
+          const double span = static_cast<double>(endMs - startMs);
+          double frac = (span > 0.0)
+          ? (static_cast<double>(timestamp) - startMs) / span
+          : 0.0;
+          if (frac < 0.0) frac = 0.0;
+          if (frac > 1.0) frac = 1.0;
+          m_progress->set_fraction(frac);
+
+          // Let GTK process pending events (redraw the progress bar).
+          // Without this, the bar only repaints when the signal handler returns,
+          // i.e. at the end — the "stuck at 0% then jumps to 100%" symptom.
+          while (g_main_context_iteration(nullptr, FALSE)) {}
+      }
+      // -----------------------------------------------------------------
+
+
+
 
     }
+
+
+
+    if (m_progress) {
+        m_progress->set_fraction(1.0);
+    }
+
 
 
 }
@@ -308,6 +331,11 @@ void MainWindow::append_log(std::ostringstream osstream)
 
 
     buff->insert(buff->end(),  ready_ustrm);
+
+
+
+
+
 }
 
 
